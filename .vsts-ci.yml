@@ -1,23 +1,15 @@
-# YAML build definition for this app
-# This file is needed only when you want to model your build definitions using YAML
 steps:
-- script: |
-    displayName: Name1
-    dotnet restore
-    dotnet build
-    dotnet test dotnetcore-tests/dotnetcore-tests.csproj
-    dotnet publish -o $(Build.ArtifactStagingDirectory)
-    
+- task: Npm@1
+  displayName: npm install
 
-- task: archiveFiles@1
+- task: Gulp@0
   inputs:
-    rootFolder: $(Build.ArtifactStagingDirectory)
-    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    displayName: Name2
+    publishJUnitResults: "true"
+    displayName: Gulp
 
-- task: publishBuildArtifacts@1
+- task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    ArtifactName: drop
-    ArtifactType: Container
-    displayName: Name1
+    PathtoPublish: $(Build.SourcesDirectory)
+    ArtifactName: "drop"
+    ArtifactType: "Container"
+    displayName: Publish the artifacts
