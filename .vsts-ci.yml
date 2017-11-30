@@ -6,14 +6,17 @@ steps:
     dotnet build
     dotnet test dotnetcore-tests/dotnetcore-tests.csproj
     dotnet publish -o $(Build.ArtifactStagingDirectory)
+    displayName: Name1
 
 - task: archiveFiles@1
   inputs:
     rootFolder: $(Build.ArtifactStagingDirectory)
     archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    displayName: Name2
 
 - task: publishBuildArtifacts@1
   inputs:
     PathtoPublish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
     ArtifactName: drop
     ArtifactType: Container
+    displayName: Name1
